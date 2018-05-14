@@ -1,0 +1,7 @@
+Aluna: Ludmila Ferreira Vicente e Silva	NUSP: 7557136
+#TODO arquivos inclusos e descrição de cada um
+#TODO descrição de como usar
+#TODO qual pc e especificações foram usadas
+#TODO como compilar
+
+

@@ -1,7 +1,6 @@
 #include "utils.h"
 
 
-/* retorna 1 se a senha esta dentro das especificacao */
 int password_check (char *password) {
   int i, d, a, len;
   len = strlen (password);
@@ -26,6 +25,35 @@ char* password_concat (char *password) {
   return new_pass;
 }
 
-__uint32_t five_bits_right (__uint32_t bin) {
-  return (bin &= ((1 << 5) - 1));
+uint32_t five_bits_right (uint32_t num) {
+  return num &= 0x000001f;
+}
+
+uint32_t** alocation (int l, int c) {
+	uint32_t **matrix;
+	int i;
+	matrix = malloc (l * sizeof (uint32_t*));
+	for (i = 0; i < l; ++i)  matrix[i] = malloc (c * sizeof (uint32_t));
+	return matrix;
+}
+
+uint128_t* block_creation (byte_t *file_bytes, long file_size) {
+  uint128_t *block;
+
+  block = malloc (sizeof (uint128_t) * (file_size + 1));
+
+  return block;
+
+}
+
+void sbox_read (char *file, uint32_t sbox[]) {
+	int i;
+	FILE *in;
+	in = fopen (file, "r");
+	for (i = 0; i < 256; ++i)  fscanf (in, "%x", &sbox[i]);
+	fclose (in);
+}
+
+uint32_t circular_rotation(uint32_t bin, int n){
+  return (bin  << n) | (bin  >> (32 - n));
 }

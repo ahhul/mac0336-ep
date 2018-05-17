@@ -5,15 +5,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <inttypes.h>
+
 #include "utils.h"
 #include "keys.h"
+#include "hexdump.h"
 
 int main (int argc, char *argv[]) {
+
+  long file_size;
+  /* vetor do arquivo de entrada */
+  byte_t *file_bytes;
   /* Chave que sera derivada da senha */
   char *K;
-
   /* Checa se existem todos os parametros */
   K = argv[1];
+
+  /* para ler o arquivo */
+  file_size = get_file_size(argv[3]);
+  file_bytes = malloc(file_size*sizeof(*file_bytes));
+  read_file_to_array(argv[3], file_bytes, file_size);
+
 
   /* Checa se a senha está dentro da especificacao */
   if (password_check (K) == 0) {

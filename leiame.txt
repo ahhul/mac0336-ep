@@ -1,7 +1,21 @@
 Aluna: Ludmila Ferreira Vicente e Silva	NUSP: 7557136
-#TODO arquivos inclusos e descrição de cada um
-#TODO descrição de como usar
-#TODO qual pc e especificações foram usadas
-#TODO como compilar
+Exercício-Programa Criptografia e Segurança de Dados 2018
 
 
+O sarquivos inclusos são:
+  - hexdump.c e hexdump.h:  para a leitura do arquivo
+  - keys.c e keys.h:  para a geração das chaves e subchaves
+  - utils.c e utils.h:  onde estão as funções que manipulam bits, criam blocos e manipulam a senha
+  - main: onde está o programa principal
+  - Makefile
+
+Para criar o executável, execute o seguinte comando no diretório do trabalho:
+  $ make
+
+Para executar:
+  $ ./k128 -c -i <arquivo de entrada> -o <arquivo de saída> -p <senha> -a
+
+
+
+Obs.: O EP está incompleto, pois não consegui terminar. Apenas a parte da encriptação foi implementada, porém também está incompleta, pois não escreve no arquivo de saída.
+Estou enviando o ep dessa maneira para tentar uma possível recuperação.

@@ -25,10 +25,28 @@ char* password_concat (char *password) {
   return new_pass;
 }
 
+uint128_t key_creation(char* password){
+  byte_t bytes[4];
+  uint32_t blocks[4];
+  int i, j = 0, k = 0;
+  uint128_t key;
+  for(i = 0; i < 16; i++){
+    bytes[j++] = password[i];
+    if( j == 4){
+      blocks[k++] = bytes_to_int32(bytes);
+      j = 0;
+    }
+  }
+  key.X = blocks[0];
+  key.Y = blocks[1];
+  key.W = blocks[2];
+  key.Z = blocks[3];
+  return key;
+}
+
 uint32_t five_bits_right (uint32_t num) {
   return num &= 0x000001f;
 }
-
 
 uint32_t bytes_to_int32 (byte_t *num_bytes){
   uint32_t num_int;
@@ -59,10 +77,6 @@ uint128_t* block_creation (byte_t *file_bytes, long file_size) {
   for (i = 0; i < file_size; i++) {
     num_bytes[j++] = file_bytes[i];
 
-    printf("i: %ld \n", i);
-    printf("j: %ld \n", j);
-    printf("k: %ld \n", k);
-    printf("b: %ld \n\n", blocks);
     if(j == 4){
       j = 0;
       num_int[k++] = bytes_to_int32 (num_bytes);
@@ -96,12 +110,12 @@ uint128_t* block_creation (byte_t *file_bytes, long file_size) {
   return block;
 }
 
-uint128_t xor_block (uint128_t *A, uint128_t *B) {
+uint128_t xor_block (uint128_t A, uint128_t B) {
   uint128_t xor;
-	xor.X = A->X ^ B->X;
-  xor.Y = A->Y ^ B->Y;
-  xor.W = A->W ^ B->W;
-  xor.Z = A->Z ^ B->Z;
+	xor.X = A.X ^ B.X;
+  xor.Y = A.Y ^ B.Y;
+  xor.W = A.W ^ B.W;
+  xor.Z = A.Z ^ B.Z;
   return xor;
 }
 

@@ -22,15 +22,17 @@ int password_check (char *password);
 /* retorna a nova senha, que é a senha antiga concatenada com ela mesma */
 char* password_concat (char *password);
 
+/* Cria a chave principal */
+uint128_t key_creation(char* password);
+
 /* retorna os 5 ultimos bits da direita */
 uint32_t five_bits_right (uint32_t bin);
 
 
 /* faz a operação xor entre dois números A e B */
-uint128_t xor_block (uint128_t *A, uint128_t *B);
+uint128_t xor_block (uint128_t A, uint128_t B);
 
-
-/* Lê sboxes */
+/* Lê as sboxes */
 void sbox_read (char *file, uint32_t sbox[]);
 
 /* faz a rotacao circular do numero com n shifts*/

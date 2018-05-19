@@ -23,7 +23,7 @@ uint32_t f_2(uint32_t X, byte_t KR5, uint32_t KM32);
 /* fução f3 do enunciado */
 uint32_t f_3(uint32_t X, byte_t KR5, uint32_t KM32);
 /* Gera a Chave intermediaria */
-uint128_t intermediary_key (uint128_t *K_old, uint128_t *K, int iteration);
+uint128_t intermediary_key (uint128_t K_old, int iteration);
 
 uint128_t one_iteration (int iteration, uint128_t int_key, uint128_t value);
 

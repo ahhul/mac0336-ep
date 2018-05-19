@@ -49,13 +49,13 @@ uint32_t f_3(uint32_t X, byte_t KR5, uint32_t KM32){
   return Y;
 }
 
-uint128_t intermediary_key (uint128_t *K_old, uint128_t *K, int iteration){
+uint128_t intermediary_key (uint128_t K_old, int iteration){
 	uint128_t inter_key, constant;
 	uint32_t X, Y, W, Z;
-	X = K_old->X;
-	Y = K_old->Y;
-	W = K_old->W;
-	Z = K_old->Z;
+	X = K_old.X;
+	Y = K_old.Y;
+	W = K_old.W;
+	Z = K_old.Z;
 
 	if (iteration == 0){
 		constant.X = 0x5A827999;
@@ -67,14 +67,14 @@ uint128_t intermediary_key (uint128_t *K_old, uint128_t *K, int iteration){
 		inter_key.W = W ^ constant.W;
 		inter_key.Z = Z ^ constant.Z;
 	} else {
-		K_old->W ^= f_2(K_old->X, circular_rotation (ConstR, fmod(pow(iteration + 2, 2), 3)), circular_rotation (ConstM, fmod(pow(iteration + 3, 2), 7)));
-		K_old->Z ^= f_2(K_old->W, circular_rotation (ConstR, fmod(iteration + 2, 3)), circular_rotation (ConstM, fmod(iteration + 3, 7)));
-		K_old->Y ^= f_2(K_old->Z, circular_rotation (ConstR, fmod(pow(iteration + 2, 3), 3)), circular_rotation (ConstM, fmod(pow(iteration + 3, 3), 7)));
-		K_old->X ^= f_2(K_old->Y, circular_rotation (ConstR, fmod(pow(iteration + 2, 2), 3)), circular_rotation (ConstM, fmod(pow(iteration + 3, 2), 7)));
-		inter_key.X = K_old->W;
-		inter_key.Y = K_old->Z;
-		inter_key.W = K_old->Y;
-		inter_key.Z = K_old->X;
+		K_old.W ^= f_2(K_old.X, circular_rotation (ConstR, fmod(pow(iteration + 2, 2), 3)), circular_rotation (ConstM, fmod(pow(iteration + 3, 2), 7)));
+		K_old.Z ^= f_2(K_old.W, circular_rotation (ConstR, fmod(iteration + 2, 3)), circular_rotation (ConstM, fmod(iteration + 3, 7)));
+		K_old.Y ^= f_2(K_old.Z, circular_rotation (ConstR, fmod(pow(iteration + 2, 3), 3)), circular_rotation (ConstM, fmod(pow(iteration + 3, 3), 7)));
+		K_old.X ^= f_2(K_old.Y, circular_rotation (ConstR, fmod(pow(iteration + 2, 2), 3)), circular_rotation (ConstM, fmod(pow(iteration + 3, 2), 7)));
+		inter_key.X = K_old.W;
+		inter_key.Y = K_old.Z;
+		inter_key.W = K_old.Y;
+		inter_key.Z = K_old.X;
 	}
 
 	return inter_key;
@@ -91,7 +91,7 @@ uint128_t one_iteration (int iteration, uint128_t int_key, uint128_t value){
   W = value.W;
   Z = value.Z;
 
-	sub_keys(int_key, KM32, KR5);
+	sub_keys(int_key, KR5, KM32);
 
 
   W ^= f_2(Z, KR5[0], KM32[0]);

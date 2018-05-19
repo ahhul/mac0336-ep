@@ -4,13 +4,13 @@ CC = gcc
 OBJS = utils.o main.o keys.o hexdump.o
 
 k128: $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -o k128
+	$(CC) $(FLAGS) $(OBJS) -o k128 -lm
 
 main.o: main.c
 	$(CC) $(FLAGS) -c main.c
 
 keys.o: keys.c
-	$(CC) $(FLAGS) -c keys.c
+	$(CC) $(FLAGS) -c keys.c -lm
 
 hexdump.o: hexdump.c
 	$(CC) $(FLAGS) -c hexdump.c

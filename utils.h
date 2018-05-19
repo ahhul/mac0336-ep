@@ -10,7 +10,7 @@
 #include "hexdump.h"
 
 typedef struct{
-  uint32_t X,Y, Z, W;
+  uint32_t X, Y, Z, W;
 } uint128_t;
 
 /* vetores para guardas as sboxes */
@@ -25,12 +25,21 @@ char* password_concat (char *password);
 /* retorna os 5 ultimos bits da direita */
 uint32_t five_bits_right (uint32_t bin);
 
-/* aloca matrix */
-uint32_t** alocation (int l, int c);
+
+/* faz a operação xor entre dois números A e B */
+uint128_t xor_block (uint128_t *A, uint128_t *B);
+
 
 /* Lê sboxes */
 void sbox_read (char *file, uint32_t sbox[]);
 
 /* faz a rotacao circular do numero com n shifts*/
 uint32_t circular_rotation(uint32_t bin, int n);
+
+
+uint32_t bytes_to_int32 (byte_t *num_bytes);
+
+byte_t* get_bytes (uint32_t uint32);
+
+uint128_t* block_creation (byte_t *file_bytes, long file_size);
 #endif

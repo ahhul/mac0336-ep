@@ -29,21 +29,80 @@ uint32_t five_bits_right (uint32_t num) {
   return num &= 0x000001f;
 }
 
-uint32_t** alocation (int l, int c) {
-	uint32_t **matrix;
-	int i;
-	matrix = malloc (l * sizeof (uint32_t*));
-	for (i = 0; i < l; ++i)  matrix[i] = malloc (c * sizeof (uint32_t));
-	return matrix;
+
+uint32_t bytes_to_int32 (byte_t *num_bytes){
+  uint32_t num_int;
+  num_int = num_bytes[0] + (num_bytes[1] << 8) + (num_bytes[2] << 16) + (num_bytes[3] << 24);
+  return num_int;
 }
 
+byte_t* get_bytes (uint32_t uint32){
+  byte_t *bytes = malloc (4 * sizeof (byte_t));
+  int i, j;
+  j = 0;
+  for (i = 3; i >= 0; i--){
+    bytes[j++] = (uint32 >> (8*i)) & 0xff;
+  }
+  return bytes;
+}
+
+
 uint128_t* block_creation (byte_t *file_bytes, long file_size) {
+  long i, j, k, blocks;
   uint128_t *block;
+  byte_t num_bytes[4];
+  uint32_t num_int[4];
+  i = j = k = blocks = 0;
 
-  block = malloc (sizeof (uint128_t) * (file_size + 1));
+  block = malloc (sizeof (uint128_t) * ((file_size / 16) + 1));
 
+  for (i = 0; i < file_size; i++) {
+    num_bytes[j++] = file_bytes[i];
+
+    printf("i: %ld \n", i);
+    printf("j: %ld \n", j);
+    printf("k: %ld \n", k);
+    printf("b: %ld \n\n", blocks);
+    if(j == 4){
+      j = 0;
+      num_int[k++] = bytes_to_int32 (num_bytes);
+      if (k == 4) {
+        k = 0;
+        block[blocks].X = num_int[0];
+        block[blocks].Y = num_int[1];
+        block[blocks].W = num_int[2];
+        block[blocks].Z = num_int[3];
+        blocks++;
+      }
+    }
+  }
+
+  if (k != 0){
+    while (k < 4) {
+      num_bytes[j++] = 0xff;
+      if (j == 4) {
+        num_int[k++] = bytes_to_int32 (num_bytes);
+        j = 0;
+      }
+    }
+    block[blocks].X = num_int[0];
+    block[blocks].Y = num_int[1];
+    block[blocks].W = num_int[2];
+    block[blocks].Z = num_int[3];
+    blocks++;
+  }
+  /* guarda tamanho do bloco */
+  block[blocks++].Z = file_size;
   return block;
+}
 
+uint128_t xor_block (uint128_t *A, uint128_t *B) {
+  uint128_t xor;
+	xor.X = A->X ^ B->X;
+  xor.Y = A->Y ^ B->Y;
+  xor.W = A->W ^ B->W;
+  xor.Z = A->Z ^ B->Z;
+  return xor;
 }
 
 void sbox_read (char *file, uint32_t sbox[]) {
